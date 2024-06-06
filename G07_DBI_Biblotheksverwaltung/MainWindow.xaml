@@ -5,8 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:G07_DBI_Biblotheksverwaltung"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Bibliotheksverwaltung" Height="450" Width="800">
     <Grid>
+        <TabControl>
+            <TabItem Header="Bücher">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="TxtSearchBooks" Width="200" Margin="5" />
+                        <Button x:Name="BtnSearchBooks" Margin="5" Click="BtnSearchBooks_Click">Suchen</Button>
+                    </StackPanel>
+                    <StackPanel>
+                        <Button Content="Neues Buch" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Buch bearbeiten" Click="EditLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Buch löschen" Click="DeleteLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
+                    </StackPanel>
+                    <DataGrid x:Name="BooksDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Titel" Binding="{Binding Title}" />
+                            <DataGridTextColumn Header="Autor" Binding="{Binding Author}" />
+                            <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" />
+                            <DataGridTextColumn Header="Jahr" Binding="{Binding Year}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Benutzer">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="TxtSearchUsers" Width="200" Margin="5" />
+                        <Button x:Name="BtnSearchUsers" Margin="5" Click="BtnSearchUsers_Click">Suchen</Button>
+                    </StackPanel>
+                    <StackPanel>
+                        <Button Content="Neuer Benutzer" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Benutzer bearbeiten" Click="EditLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Benutzer löschen" Click="DeleteLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
+                    </StackPanel>
+                    <DataGrid x:Name="UsersDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Ausleihen">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="TxtSearchLoans" Width="200" Margin="5" />
+                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearchLoans_Click">Suchen</Button>
+                    </StackPanel>
+                    <StackPanel>
+                        <Button Content="Neue Ausleihe" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Ausleihe bearbeiten" Click="EditLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Ausleihe löschen" Click="DeleteLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
+                    </StackPanel>
+                    <DataGrid x:Name="LoansDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Buchtitel" Binding="{Binding BookTitle}" />
+                            <DataGridTextColumn Header="Autor" Binding="{Binding BookAuthor}" />
+                            <DataGridTextColumn Header="Benutzer" Binding="{Binding UserName}" />
+                            <DataGridTextColumn Header="E-Mail" Binding="{Binding UserEmail}" />
+                            <DataGridTextColumn Header="Ausleihdatum" Binding="{Binding LoanDate}" />
+                            <DataGridTextColumn Header="Rückgabedatum" Binding="{Binding ReturnDate}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
