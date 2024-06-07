@@ -15,13 +15,13 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <TextBox x:Name="TxtSearchBooks" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchBooks" Margin="5" Click="BtnSearchBooks_Click">Suchen</Button>
+                        <TextBox x:Name="TxtSearch" Width="200" Margin="5" />
+                        <Button x:Name="BtnSearch" Margin="5" Click="BtnSearch_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
-                        <Button Content="Neues Buch" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
-                        <Button Content="Buch bearbeiten" Click="EditLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
-                        <Button Content="Buch löschen" Click="DeleteLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
+                        <Button Content="Neues Buch" Click="AddBookButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Buch bearbeiten" Click="EditBookButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Buch löschen" Click="DeleteBookButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
                     </StackPanel>
                     <DataGrid x:Name="BooksDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
                         <DataGrid.Columns>
@@ -41,12 +41,12 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearchUsers" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchUsers" Margin="5" Click="BtnSearchUsers_Click">Suchen</Button>
+                        <Button x:Name="BtnSearchUsers" Margin="5" Click="BtnSearch_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
-                        <Button Content="Neuer Benutzer" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
-                        <Button Content="Benutzer bearbeiten" Click="EditLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
-                        <Button Content="Benutzer löschen" Click="DeleteLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
+                        <Button Content="Neuer Benutzer" Click="AddUserButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Benutzer bearbeiten" Click="EditUserButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
+                        <Button Content="Benutzer löschen" Click="DeleteUserButton_Click" Padding="4,2,2,4" Margin="300,5,5,10"/>
                     </StackPanel>
                     <DataGrid x:Name="UsersDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
                         <DataGrid.Columns>
@@ -65,7 +65,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearchLoans" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearchLoans_Click">Suchen</Button>
+                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearch_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
                         <Button Content="Neue Ausleihe" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />

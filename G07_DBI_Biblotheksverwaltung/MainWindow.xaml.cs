@@ -21,8 +21,15 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void ConnectToDatabase()
         {
-            connection = new SQLiteConnection("Data Source=Datenbank;Version=3;");
-            connection.Open();
+            try
+            {
+                connection = new SQLiteConnection("Data Source=Datenbank;Version=3;");
+                connection.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Verbinden zur Datenbank: " + ex.Message);
+            }
         }
 
         private void LoadData()
@@ -37,11 +44,11 @@ namespace G07_DBI_Biblotheksverwaltung
             string query = "SELECT * FROM Books";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<Book> books = new List<Book>();
+            List<User_Book_BookLoan.Book> books = new List<User_Book_BookLoan.Book>();
 
             while (reader.Read())
             {
-                books.Add(new Book
+                books.Add(new User_Book_BookLoan.Book
                 {
                     BookID = Convert.ToInt32(reader["BookID"]),
                     Title = reader["Title"].ToString(),
@@ -60,11 +67,11 @@ namespace G07_DBI_Biblotheksverwaltung
             string query = "SELECT * FROM Users";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<User> users = new List<User>();
+            List<User_Book_BookLoan.User> users = new List<User_Book_BookLoan.User>();
 
             while (reader.Read())
             {
-                users.Add(new User
+                users.Add(new User_Book_BookLoan.User
                 {
                     UserID = Convert.ToInt32(reader["UserID"]),
                     Name = reader["Name"].ToString(),
@@ -81,11 +88,11 @@ namespace G07_DBI_Biblotheksverwaltung
             string query = "SELECT * FROM BookLoans";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<BookLoan> loans = new List<BookLoan>();
+            List<User_Book_BookLoan.BookLoan> loans = new List<User_Book_BookLoan.BookLoan>();
 
             while (reader.Read())
             {
-                loans.Add(new BookLoan
+                loans.Add(new User_Book_BookLoan.BookLoan
                 {
                     BookTitle = reader["BookTitle"].ToString(),
                     BookAuthor = reader["BookAuthor"].ToString(),
@@ -99,31 +106,60 @@ namespace G07_DBI_Biblotheksverwaltung
             reader.Close();
             LoansDataGrid.ItemsSource = loans;
         }
-    }
 
-    public class Book
-    {
-        public int BookID { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Genre { get; set; }
-        public int Year { get; set; }
-    }
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
 
-    public class User
-    {
-        public int UserID { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-    }
+        }
 
-    public class BookLoan
-    {
-        public string BookTitle { get; set; }
-        public string BookAuthor { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public DateTime LoanDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        private void AddLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void BtnSearchUsers_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddBookButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditBookButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteBookButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddUserButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditUserButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
