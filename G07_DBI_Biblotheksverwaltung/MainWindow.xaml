@@ -16,7 +16,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearch" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearch" Margin="5" Click="BtnSearch_Click">Suchen</Button>
+                        <Button x:Name="BtnSearch" Margin="5" Click="BtnSearchBook_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
                         <Button Content="Neues Buch" Click="AddBookButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
@@ -41,7 +41,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearchUsers" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchUsers" Margin="5" Click="BtnSearch_Click">Suchen</Button>
+                        <Button x:Name="BtnSearchUsers" Margin="5" Click="BtnSearchUser_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
                         <Button Content="Neuer Benutzer" Click="AddUserButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />
@@ -65,7 +65,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearchLoans" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearch_Click">Suchen</Button>
+                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearchLoan_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
                         <Button Content="Neue Ausleihe" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />

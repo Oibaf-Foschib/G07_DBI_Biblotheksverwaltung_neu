@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows;
+using static G07_DBI_Biblotheksverwaltung.User_Book_BookLoan;
 
 namespace G07_DBI_Biblotheksverwaltung
 {
@@ -11,6 +12,10 @@ namespace G07_DBI_Biblotheksverwaltung
     public partial class MainWindow : Window
     {
         private SQLiteConnection connection;
+
+        private List<Book> books = new List<Book>();
+        private List<User> users = new List<User>();
+        private List<BookLoan> loans = new List<BookLoan>();
 
         public MainWindow()
         {
@@ -44,11 +49,11 @@ namespace G07_DBI_Biblotheksverwaltung
             string query = "SELECT * FROM Books";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<User_Book_BookLoan.Book> books = new List<User_Book_BookLoan.Book>();
+            books.Clear();
 
             while (reader.Read())
             {
-                books.Add(new User_Book_BookLoan.Book
+                books.Add(new Book
                 {
                     BookID = Convert.ToInt32(reader["BookID"]),
                     Title = reader["Title"].ToString(),
@@ -62,16 +67,17 @@ namespace G07_DBI_Biblotheksverwaltung
             BooksDataGrid.ItemsSource = books;
         }
 
+
         private void LoadUsers()
         {
             string query = "SELECT * FROM Users";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<User_Book_BookLoan.User> users = new List<User_Book_BookLoan.User>();
+            users.Clear();
 
             while (reader.Read())
             {
-                users.Add(new User_Book_BookLoan.User
+                users.Add(new User
                 {
                     UserID = Convert.ToInt32(reader["UserID"]),
                     Name = reader["Name"].ToString(),
@@ -88,11 +94,11 @@ namespace G07_DBI_Biblotheksverwaltung
             string query = "SELECT * FROM BookLoans";
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            List<User_Book_BookLoan.BookLoan> loans = new List<User_Book_BookLoan.BookLoan>();
+            loans.Clear();
 
             while (reader.Read())
             {
-                loans.Add(new User_Book_BookLoan.BookLoan
+                loans.Add(new BookLoan
                 {
                     BookTitle = reader["BookTitle"].ToString(),
                     BookAuthor = reader["BookAuthor"].ToString(),
@@ -107,9 +113,74 @@ namespace G07_DBI_Biblotheksverwaltung
             LoansDataGrid.ItemsSource = loans;
         }
 
-        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        private void BtnSearchUser_Click(object sender, RoutedEventArgs e)
         {
+            string searchText = TxtSearchUsers.Text.ToLower().Trim();
+            List<User> filteredUsers = new List<User>();
 
+            if (string.IsNullOrEmpty(searchText))
+            {
+                UsersDataGrid.ItemsSource = users;
+            }
+            else
+            {
+                foreach (User user in users)
+                {
+                    if (user.Name.ToLower().Contains(searchText) || user.Email.ToLower().Contains(searchText))
+                    {
+                        filteredUsers.Add(user);
+                    }
+                }
+                UsersDataGrid.ItemsSource = filteredUsers;
+            }
+        }
+
+        private void BtnSearchBook_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = TxtSearch.Text.ToLower().Trim();
+            List<Book> filteredBooks = new List<Book>();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                BooksDataGrid.ItemsSource = books;
+            }
+            else
+            {
+                foreach (Book book in books)
+                {
+                    if (book.Title.ToLower().Contains(searchText) ||
+                        book.Author.ToLower().Contains(searchText) ||
+                        book.Genre.ToLower().Contains(searchText))
+                    {
+                        filteredBooks.Add(book); 
+                    }
+                }
+                BooksDataGrid.ItemsSource = filteredBooks; 
+            }
+        }
+
+        private void BtnSearchLoans_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = TxtSearchLoans.Text.ToLower().Trim();
+            List<BookLoan> filteredLoans = new List<BookLoan>();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                LoansDataGrid.ItemsSource = loans;
+            }
+            else
+            {
+                foreach (BookLoan loan in loans)
+                {
+                    if (loan.BookTitle.ToLower().Contains(searchText) ||
+                        loan.UserName.ToLower().Contains(searchText) ||
+                        loan.UserEmail.ToLower().Contains(searchText))
+                    {
+                        filteredLoans.Add(loan);
+                    }
+                }
+                LoansDataGrid.ItemsSource = filteredLoans;
+            }
         }
 
         private void AddLoanButton_Click(object sender, RoutedEventArgs e)
