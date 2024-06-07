@@ -6,7 +6,7 @@ using System.Windows;
 namespace G07_DBI_Biblotheksverwaltung
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xamlD
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -23,7 +23,7 @@ namespace G07_DBI_Biblotheksverwaltung
         {
             try
             {
-                connection = new SQLiteConnection("Data Source=Datenbank;Version=3;");
+                connection = new SQLiteConnection("Data Source=Datenbank.db;Version=3;");
                 connection.Open();
             }
             catch (Exception ex)
