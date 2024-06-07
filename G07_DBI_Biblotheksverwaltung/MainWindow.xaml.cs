@@ -7,7 +7,7 @@ using static G07_DBI_Biblotheksverwaltung.User_Book_BookLoan;
 namespace G07_DBI_Biblotheksverwaltung
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xamlD
+    /// Interaction logic for MainWindow.xamlD ds
     /// </summary>
     public partial class MainWindow : Window
     {
