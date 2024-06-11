@@ -65,7 +65,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBox x:Name="TxtSearchLoans" Width="200" Margin="5" />
-                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearchLoan_Click">Suchen</Button>
+                        <Button x:Name="BtnSearchLoans" Margin="5" Click="BtnSearchLoans_Click">Suchen</Button>
                     </StackPanel>
                     <StackPanel>
                         <Button Content="Neue Ausleihe" Click="AddLoanButton_Click" Padding="4,2,2,4" Margin="300,5,5,10" />

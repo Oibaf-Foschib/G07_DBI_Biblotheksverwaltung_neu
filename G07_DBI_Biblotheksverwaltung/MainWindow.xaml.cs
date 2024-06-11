@@ -185,17 +185,35 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void AddLoanButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var addLoanWindow = new AddLoanWindow();
+            addLoanWindow.ShowDialog();
+            if (addLoanWindow.DialogResult == true)
+            {
+                LoadLoans(); 
+            }
         }
 
         private void EditLoanButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (LoansDataGrid.SelectedItem != null)
+            {
+                var editLoanWindow = new EditLoanWindow(LoansDataGrid.SelectedItem as BookLoan);
+                editLoanWindow.ShowDialog();
+                if (editLoanWindow.DialogResult == true)
+                {
+                    LoadLoans();
+                }
+            }
         }
 
         private void DeleteLoanButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (LoansDataGrid.SelectedItem != null)
+            {
+                loans.Remove(LoansDataGrid.SelectedItem as BookLoan);
+                LoansDataGrid.ItemsSource = null;
+                LoansDataGrid.ItemsSource = loans;
+            }
         }
 
         private void BtnSearchUsers_Click(object sender, RoutedEventArgs e)
@@ -205,32 +223,69 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void AddBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var addBookWindow = new AddBookWindow();
+            addBookWindow.ShowDialog();
+            if (addBookWindow.DialogResult == true)
+            {
+                LoadBooks();
+            }
         }
 
         private void EditBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (BooksDataGrid.SelectedItem != null)
+            {
+                var editBookWindow = new EditBookWindow(BooksDataGrid.SelectedItem as Book);
+                editBookWindow.ShowDialog();
+                if (editBookWindow.DialogResult == true)
+                {
+                    LoadBooks();
+                }
+            }
         }
 
         private void DeleteBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (BooksDataGrid.SelectedItem != null)
+            {
+                books.Remove(BooksDataGrid.SelectedItem as Book);
+                BooksDataGrid.ItemsSource = null;
+                BooksDataGrid.ItemsSource = books;
+            }
         }
 
         private void AddUserButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var addUserWindow = new AddUserWindow();
+            addUserWindow.ShowDialog();
+            if (addUserWindow.DialogResult == true)
+            {
+                LoadUsers(); 
+            }
         }
 
         private void EditUserButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UsersDataGrid.SelectedItem != null)
+            {
+                var editUserWindow = new EditUserWindow(UsersDataGrid.SelectedItem as User);
+                editUserWindow.ShowDialog();
+                if (editUserWindow.DialogResult == true)
+                {
+                    LoadUsers();
+                }
+            }
         }
 
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
+            {
+                if (UsersDataGrid.SelectedItem != null)
+                {
+                    users.Remove(UsersDataGrid.SelectedItem as User);
+                    UsersDataGrid.ItemsSource = null;
+                    UsersDataGrid.ItemsSource = users;
+                }
+            }
     }
 }
