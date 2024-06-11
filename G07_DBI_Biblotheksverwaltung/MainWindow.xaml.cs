@@ -195,11 +195,6 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void DeleteLoanButton_Click(object sender, RoutedEventArgs e)
         {
-            
-        }
-
-        private void BtnSearchUsers_Click(object sender, RoutedEventArgs e)
-        {
 
         }
 

@@ -1,0 +1,35 @@
+﻿<Window x:Class="G07_DBI_Biblotheksverwaltung.LoanWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ausleihe bearbeiten/hinzufügen" Height="323" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Buchtitel:"/>
+        <TextBox x:Name="txtBookTitle" Margin="120,3,0,250" Grid.RowSpan="5"/>
+
+        <Label Content="Benutzer:" Margin="0,56,0,166" Grid.Row="4"/>
+        <TextBox x:Name="txtUser" Margin="120,58,0,171" Grid.Row="4"/>
+
+        <Label Content="Autor:" Margin="0,16,0,206" Grid.Row="4"/>
+        <TextBox x:Name="txtAutor" Margin="120,20,0,211" Grid.Row="4"/>
+
+        <Label Content="Email:" Margin="0,96,0,129" Grid.Row="4"/>
+        <TextBox x:Name="txtEmail" Margin="120,96,0,133" Grid.Row="4"/>
+
+        <Label Content="Ausleihdatum:" Margin="0,136,0,86" Grid.Row="4"/>
+        <DatePicker x:Name="dpLoanDate" Margin="120,136,0,90" Grid.Row="4"/>
+
+        <Label Content="Rückgabedatum:" Margin="0,176,0,46" Grid.Row="4"/>
+        <DatePicker x:Name="dpReturnDate" Margin="120,176,0,50" Grid.Row="4"/>
+
+        <Button Content="Speichern" Click="SaveLoan_Click" VerticalAlignment="Top" Grid.Row="4" Margin="0,216,0,0"/>
+        <Button Content="Abbrechen" Click="Cancle_Click" VerticalAlignment="Top" Grid.Row="4" Margin="0,241,0,0"/>
+    </Grid>
+</Window>
