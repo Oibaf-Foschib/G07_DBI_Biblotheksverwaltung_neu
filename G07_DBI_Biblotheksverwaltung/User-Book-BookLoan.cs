@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace G07_DBI_Biblotheksverwaltung
 {
-    internal class User_Book_BookLoan
+    public class User_Book_BookLoan
     {
         public class Book
         {
@@ -26,6 +26,9 @@ namespace G07_DBI_Biblotheksverwaltung
 
         public class BookLoan
         {
+            public int LoanID { get; set; }
+            public int BookID { get; set; }
+            public int UserID { get; set; }
             public string BookTitle { get; set; }
             public string BookAuthor { get; set; }
             public string UserName { get; set; }

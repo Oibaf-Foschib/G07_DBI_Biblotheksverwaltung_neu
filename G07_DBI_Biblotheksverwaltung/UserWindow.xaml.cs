@@ -1,27 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SQLite;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using static G07_DBI_Biblotheksverwaltung.User_Book_BookLoan;
 
 namespace G07_DBI_Biblotheksverwaltung
 {
-    /// <summary>
-    /// Interaktionslogik für UserWindow.xaml
-    /// </summary>
     public partial class UserWindow : Window
     {
-        public UserWindow()
+
+        public UserWindow(SQLiteConnection conn)
         {
             InitializeComponent();
+        }
+
+        private void SaveUser_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

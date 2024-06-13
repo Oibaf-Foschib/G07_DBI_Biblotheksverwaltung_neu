@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Windows;
 using static G07_DBI_Biblotheksverwaltung.User_Book_BookLoan;
 
 namespace G07_DBI_Biblotheksverwaltung
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xamlD ds
-    /// </summary>
     public partial class MainWindow : Window
     {
         private SQLiteConnection connection;
-
-        private List<Book> books = new List<Book>();
-        private List<User> users = new List<User>();
-        private List<BookLoan> loans = new List<BookLoan>();
+        private ObservableCollection<Book> books;
+        private ObservableCollection<User> users;
+        private ObservableCollection<BookLoan> loans;
 
         public MainWindow()
         {
@@ -28,7 +24,9 @@ namespace G07_DBI_Biblotheksverwaltung
         {
             try
             {
-                connection = new SQLiteConnection("Data Source=Datenbank.db;Version=3;");
+                string projectDirectory = System.IO.Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
+                string dbPath = System.IO.Path.Combine(projectDirectory, "Datenbank.db");
+                connection = new SQLiteConnection($"Data Source={dbPath};Version=3;");
                 connection.Open();
             }
             catch (Exception ex)
@@ -46,156 +44,126 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void LoadBooks()
         {
+            books = new ObservableCollection<Book>();
             string query = "SELECT * FROM Books";
-            SQLiteCommand command = new SQLiteCommand(query, connection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            books.Clear();
-
-            while (reader.Read())
+            using (var command = new SQLiteCommand(query, connection))
             {
-                books.Add(new Book
+                using (var reader = command.ExecuteReader())
                 {
-                    BookID = Convert.ToInt32(reader["BookID"]),
-                    Title = reader["Title"].ToString(),
-                    Author = reader["Author"].ToString(),
-                    Genre = reader["Genre"].ToString(),
-                    Year = Convert.ToInt32(reader["Year"])
-                });
+                    while (reader.Read())
+                    {
+                        books.Add(new Book
+                        {
+                            BookID = Convert.ToInt32(reader["BookID"]),
+                            Title = reader["Title"].ToString(),
+                            Author = reader["Author"].ToString(),
+                            Genre = reader["Genre"].ToString(),
+                            Year = Convert.ToInt32(reader["Year"])
+                        });
+                    }
+                }
             }
-
-            reader.Close();
             BooksDataGrid.ItemsSource = books;
         }
 
-
         private void LoadUsers()
         {
+            users = new ObservableCollection<User>();
             string query = "SELECT * FROM Users";
-            SQLiteCommand command = new SQLiteCommand(query, connection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            users.Clear();
-
-            while (reader.Read())
+            using (var command = new SQLiteCommand(query, connection))
             {
-                users.Add(new User
+                using (var reader = command.ExecuteReader())
                 {
-                    UserID = Convert.ToInt32(reader["UserID"]),
-                    Name = reader["Name"].ToString(),
-                    Email = reader["Email"].ToString()
-                });
+                    while (reader.Read())
+                    {
+                        users.Add(new User
+                        {
+                            UserID = Convert.ToInt32(reader["UserID"]),
+                            Name = reader["Name"].ToString(),
+                            Email = reader["Email"].ToString()
+                        });
+                    }
+                }
             }
-
-            reader.Close();
             UsersDataGrid.ItemsSource = users;
         }
 
         private void LoadLoans()
         {
-            string query = "SELECT * FROM BookLoans";
-            SQLiteCommand command = new SQLiteCommand(query, connection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            loans.Clear();
-
-            while (reader.Read())
+            loans = new ObservableCollection<BookLoan>();
+            string query = "SELECT Loans.LoanID, Books.Title AS BookTitle, Books.Author AS BookAuthor, Users.Name AS UserName, Users.Email AS UserEmail, Loans.LoanDate, Loans.ReturnDate " +
+                           "FROM Loans " +
+                           "INNER JOIN Books ON Loans.BookID = Books.BookID " +
+                           "INNER JOIN Users ON Loans.UserID = Users.UserID";
+            using (var command = new SQLiteCommand(query, connection))
             {
-                loans.Add(new BookLoan
+                using (var reader = command.ExecuteReader())
                 {
-                    BookTitle = reader["BookTitle"].ToString(),
-                    BookAuthor = reader["BookAuthor"].ToString(),
-                    UserName = reader["UserName"].ToString(),
-                    UserEmail = reader["UserEmail"].ToString(),
-                    LoanDate = Convert.ToDateTime(reader["LoanDate"]),
-                    ReturnDate = Convert.ToDateTime(reader["ReturnDate"])
-                });
+                    while (reader.Read())
+                    {
+                        loans.Add(new BookLoan
+                        {
+                            LoanID = Convert.ToInt32(reader["LoanID"]),
+                            BookTitle = reader["BookTitle"].ToString(),
+                            BookAuthor = reader["BookAuthor"].ToString(),
+                            UserName = reader["UserName"].ToString(),
+                            UserEmail = reader["UserEmail"].ToString(),
+                            LoanDate = Convert.ToDateTime(reader["LoanDate"]),
+                            ReturnDate = Convert.ToDateTime(reader["ReturnDate"])
+                        });
+                    }
+                }
             }
-
-            reader.Close();
             LoansDataGrid.ItemsSource = loans;
         }
 
         private void BtnSearchUser_Click(object sender, RoutedEventArgs e)
         {
             string searchText = TxtSearchUsers.Text.ToLower().Trim();
-            List<User> filteredUsers = new List<User>();
+            var filteredUsers = new ObservableCollection<User>();
 
-            if (string.IsNullOrEmpty(searchText))
+            foreach (User user in users)
             {
-                UsersDataGrid.ItemsSource = users;
-            }
-            else
-            {
-                foreach (User user in users)
+                if (user.Name.ToLower().Contains(searchText) || user.Email.ToLower().Contains(searchText))
                 {
-                    if (user.Name.ToLower().Contains(searchText) || user.Email.ToLower().Contains(searchText))
-                    {
-                        filteredUsers.Add(user);
-                    }
+                    filteredUsers.Add(user);
                 }
-                UsersDataGrid.ItemsSource = filteredUsers;
             }
+            UsersDataGrid.ItemsSource = filteredUsers;
         }
 
         private void BtnSearchBook_Click(object sender, RoutedEventArgs e)
         {
             string searchText = TxtSearch.Text.ToLower().Trim();
-            List<Book> filteredBooks = new List<Book>();
+            var filteredBooks = new ObservableCollection<Book>();
 
-            if (string.IsNullOrEmpty(searchText))
+            foreach (Book book in books)
             {
-                BooksDataGrid.ItemsSource = books;
-            }
-            else
-            {
-                foreach (Book book in books)
+                if (book.Title.ToLower().Contains(searchText) ||
+                    book.Author.ToLower().Contains(searchText) ||
+                    book.Genre.ToLower().Contains(searchText))
                 {
-                    if (book.Title.ToLower().Contains(searchText) ||
-                        book.Author.ToLower().Contains(searchText) ||
-                        book.Genre.ToLower().Contains(searchText))
-                    {
-                        filteredBooks.Add(book); 
-                    }
+                    filteredBooks.Add(book);
                 }
-                BooksDataGrid.ItemsSource = filteredBooks; 
             }
+            BooksDataGrid.ItemsSource = filteredBooks;
         }
 
         private void BtnSearchLoans_Click(object sender, RoutedEventArgs e)
         {
             string searchText = TxtSearchLoans.Text.ToLower().Trim();
-            List<BookLoan> filteredLoans = new List<BookLoan>();
+            var filteredLoans = new ObservableCollection<BookLoan>();
 
-            if (string.IsNullOrEmpty(searchText))
+            foreach (BookLoan loan in loans)
             {
-                LoansDataGrid.ItemsSource = loans;
-            }
-            else
-            {
-                foreach (BookLoan loan in loans)
+                if (loan.BookTitle.ToLower().Contains(searchText) ||
+                    loan.UserName.ToLower().Contains(searchText) ||
+                    loan.UserEmail.ToLower().Contains(searchText))
                 {
-                    if (loan.BookTitle.ToLower().Contains(searchText) ||
-                        loan.UserName.ToLower().Contains(searchText) ||
-                        loan.UserEmail.ToLower().Contains(searchText))
-                    {
-                        filteredLoans.Add(loan);
-                    }
+                    filteredLoans.Add(loan);
                 }
-                LoansDataGrid.ItemsSource = filteredLoans;
             }
-        }
-
-        private void AddLoanButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EditLoanButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void DeleteLoanButton_Click(object sender, RoutedEventArgs e)
-        {
-
+            LoansDataGrid.ItemsSource = filteredLoans;
         }
 
         private void AddBookButton_Click(object sender, RoutedEventArgs e)
@@ -210,7 +178,25 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void DeleteBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (BooksDataGrid.SelectedItem is Book selectedBook)
+            {
+                try
+                {
+                    string query = "DELETE FROM Books WHERE BookID = @BookID";
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@BookID", selectedBook.BookID);
+                        command.ExecuteNonQuery();
+                        Logger.Log($"Buch mit BookID: {selectedBook.BookID} gelöscht.");
+                    }
+                    books.Remove(selectedBook);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"Fehler beim Löschen des Buchs: {ex.Message}");
+                    MessageBox.Show("Ein Fehler ist aufgetreten: " + ex.Message);
+                }
+            }
         }
 
         private void AddUserButton_Click(object sender, RoutedEventArgs e)
@@ -225,7 +211,74 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
         {
+            if (UsersDataGrid.SelectedItem is User selectedUser)
+            {
+                try
+                {
+                    string query = "DELETE FROM Users WHERE UserID = @UserID";
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", selectedUser.UserID);
+                        command.ExecuteNonQuery();
+                        Logger.Log($"Benutzer mit UserID: {selectedUser.UserID} gelöscht.");
+                    }
+                    users.Remove(selectedUser);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"Fehler beim Löschen des Benutzers: {ex.Message}");
+                    MessageBox.Show("Ein Fehler ist aufgetreten: " + ex.Message);
+                }
+            }
+        }
 
+        private void AddLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoanWindow loanWindow = new LoanWindow(connection);
+            if (loanWindow.ShowDialog() == true)
+            {
+                loans.Add(loanWindow.NewLoan);
+                Logger.Log("Ausleihliste nach Hinzufügen einer neuen Ausleihe neu geladen.");
+            }
+        }
+
+        private void EditLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LoansDataGrid.SelectedItem is BookLoan selectedLoan)
+            {
+                LoanWindow loanWindow = new LoanWindow(selectedLoan, connection);
+                if (loanWindow.ShowDialog() == true)
+                {
+                    int index = loans.IndexOf(selectedLoan);
+                    loans[index] = loanWindow.NewLoan;
+                    LoansDataGrid.ItemsSource = null;
+                    LoansDataGrid.ItemsSource = loans;
+                    Logger.Log("Ausleihliste nach Bearbeiten einer Ausleihe neu geladen.");
+                }
+            }
+        }
+
+        private void DeleteLoanButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LoansDataGrid.SelectedItem is BookLoan selectedLoan)
+            {
+                try
+                {
+                    string query = "DELETE FROM Loans WHERE LoanID = @LoanID";
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@LoanID", selectedLoan.LoanID);
+                        command.ExecuteNonQuery();
+                        Logger.Log($"Ausleihe mit LoanID: {selectedLoan.LoanID} gelöscht.");
+                    }
+                    loans.Remove(selectedLoan);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"Fehler beim Löschen der Ausleihe: {ex.Message}");
+                    MessageBox.Show("Ein Fehler ist aufgetreten: " + ex.Message);
+                }
+            }
         }
     }
 }

@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:G07_DBI_Biblotheksverwaltung"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>
