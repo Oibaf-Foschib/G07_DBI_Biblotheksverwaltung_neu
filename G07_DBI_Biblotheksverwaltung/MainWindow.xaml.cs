@@ -168,12 +168,26 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void AddBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BookWindow bookWindow = new BookWindow();
+            if (bookWindow.ShowDialog() == true)
+            {
+                books.Add(bookWindow.NewBook);
+                Logger.Log("Buchliste nach Hinzufügen eines neuen Buchs neu geladen.");
+            }
         }
 
         private void EditBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (BooksDataGrid.SelectedItem is Book selectedBook)
+            {
+                BookWindow bookWindow = new BookWindow(selectedBook);
+                if (bookWindow.ShowDialog() == true)
+                {
+                    int index = books.IndexOf(selectedBook);
+                    books[index] = bookWindow.NewBook;
+                    Logger.Log("Buchliste nach Bearbeiten eines Buchs neu geladen.");
+                }
+            }
         }
 
         private void DeleteBookButton_Click(object sender, RoutedEventArgs e)
@@ -201,13 +215,25 @@ namespace G07_DBI_Biblotheksverwaltung
 
         private void AddUserButton_Click(object sender, RoutedEventArgs e)
         {
-
-
+            UserWindow userWindow = new UserWindow(connection);
+            if (userWindow.ShowDialog() == true)
+            {
+                LoadUsers();
+                Logger.Log("Benutzerliste nach Hinzufügen eines neuen Benutzers neu geladen.");
+            }
         }
 
         private void EditUserButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (UsersDataGrid.SelectedItem is User selectedUser)
+            {
+                UserWindow userWindow = new UserWindow(selectedUser, connection);
+                if (userWindow.ShowDialog() == true)
+                {
+                    LoadUsers();
+                    Logger.Log("Benutzerliste nach Bearbeiten eines Benutzers neu geladen.");
+                }
+            }
         }
 
         private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
